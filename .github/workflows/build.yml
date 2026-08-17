@@ -26,8 +26,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/meln1kz/runpod-comfyui-klein-int8:v0.31.0
-            ghcr.io/meln1kz/runpod-comfyui-klein-int8:latest
+            ghcr.io/meln1kz/runpod-comfyui-klein-int8:v0.31.0-cu124
+            ghcr.io/meln1kz/runpod-comfyui-klein-int8:cu124
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
