@@ -28,9 +28,12 @@ RUN uv pip install \
        'torchvision==0.21.0+cu124' \
        'torchaudio==2.6.0+cu124' > /tmp/torch-cu124.constraints
 
+# 0.2.28 uses custom-op annotations that require newer PyTorch. Version
+# 0.2.27 keeps INT8 ConvRot + LoRA requantization and supports PyTorch 2.6.
 RUN git clone https://github.com/Comfy-Org/ComfyUI.git /comfyui \
     && git -C /comfyui checkout --detach "${COMFYUI_COMMIT}" \
     && test "$(git -C /comfyui rev-parse HEAD)" = "${COMFYUI_COMMIT}" \
+    && sed -i 's/comfy-kitchen==0.2.28/comfy-kitchen==0.2.27/' /comfyui/requirements.txt \
     && uv pip install -r /comfyui/requirements.txt \
        -c /tmp/torch-cu124.constraints \
        --extra-index-url https://download.pytorch.org/whl/cu124 \
@@ -59,4 +62,5 @@ CMD ["/start.sh"]
 LABEL org.opencontainers.image.source="https://github.com/Meln1kz/runpod-comfyui-klein-int8" \
       org.opencontainers.image.description="RunPod ComfyUI worker with CUDA 12.4 and INT8 ConvRot eager fallback" \
       io.comfyui.version="v0.31.0" \
-      io.pytorch.version="2.6.0+cu124"
+      io.pytorch.version="2.6.0+cu124" \
+      io.comfy-kitchen.version="0.2.27"
